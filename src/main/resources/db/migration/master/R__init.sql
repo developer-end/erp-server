@@ -1,0 +1,1 @@
+alter table tenant_school add column if not exists assigned_at TIMESTAMPTZ NOT NULL DEFAULT now()

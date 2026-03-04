@@ -1,0 +1,34 @@
+package app.school.administration.auth.projection;
+
+import java.util.Set;
+
+public interface UserProjectionDTO extends AuditableProjectionDTO {
+
+    String getFirstName();
+
+    String getLastName();
+
+    String getEmail();
+
+    String getUsername();
+
+    String getMobileNo();
+
+    Set<UserRoleProjectionDTO> getRoles();
+
+    Set<OAuthAccountProjectionDTO> getOAuthAccounts();
+
+    interface UserRoleProjectionDTO extends AuditableProjectionDTO {
+        RoleProjectionDTO getRole();
+    }
+
+    interface OAuthAccountProjectionDTO extends AuditableProjectionDTO {
+        String getInstitutionName();
+
+        String getInstitutionCode();
+
+        String getDescription();
+
+    }
+
+}
