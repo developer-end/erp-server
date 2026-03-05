@@ -8,11 +8,11 @@ import java.util.UUID;
 public class EntityNotFoundedException extends NoSuchElementException {
 
     public EntityNotFoundedException(UUID uuid) {
-        super(AppMessages.ENTITY_NOT_FOUNDED + " for the given id : " + uuid);
+        super(AppMessages.NOT_FOUNDED + " for the given id : " + uuid);
     }
 
     public EntityNotFoundedException() {
-        super(AppMessages.ENTITY_NOT_FOUNDED);
+        super(AppMessages.NOT_FOUNDED);
     }
 
     public EntityNotFoundedException(String message) {

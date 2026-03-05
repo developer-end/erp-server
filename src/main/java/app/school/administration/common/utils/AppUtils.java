@@ -1,7 +1,5 @@
 package app.school.administration.common.utils;
 
-import app.school.administration.common.base.DTO.AppResponse;
-
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -14,10 +12,6 @@ public abstract class AppUtils {
         } else {
             setter.accept(value);
         }
-    }
-
-    public AppResponse buildResponse() {
-        return null;
     }
 
 }
