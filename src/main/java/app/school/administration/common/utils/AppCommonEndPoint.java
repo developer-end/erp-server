@@ -1,4 +1,4 @@
-package app.school.administration.utils;
+package app.school.administration.common.utils;
 
 public final class AppCommonEndPoint {
 

@@ -1,6 +1,6 @@
 package app.school.administration.auth.application.constant;
 
-import app.school.administration.utils.AppModuleApi;
+import app.school.administration.common.utils.AppModuleApi;
 
 import java.util.Set;
 
