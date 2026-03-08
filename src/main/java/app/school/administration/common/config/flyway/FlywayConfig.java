@@ -1,6 +1,6 @@
 package app.school.administration.common.config.flyway;
 
-import app.school.administration.auth.context.TenantContext;
+import app.school.administration.auth.application.context.TenantContext;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;

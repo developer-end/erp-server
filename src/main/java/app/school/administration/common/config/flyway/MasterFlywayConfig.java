@@ -14,8 +14,8 @@ public class MasterFlywayConfig {
         return Flyway.configure()
                 .dataSource(dataSource)
                 .locations(
-                        "classpath:db/migration/common",
-                        "classpath:db/migration/master"
+                        "classpath:db/migration/master",
+                        "classpath:db/migration/tenant"
                 )
                 .schemas("master")
                 .createSchemas(true)

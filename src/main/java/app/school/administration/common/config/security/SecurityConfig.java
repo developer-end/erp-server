@@ -1,8 +1,8 @@
 package app.school.administration.common.config.security;
 
-import app.school.administration.auth.constant.AuthConstant;
-import app.school.administration.auth.custom.service.CustomUserDetailsService;
-import app.school.administration.common.jwt.component.JWTAuthFilter;
+import app.school.administration.auth.application.constant.AuthConstant;
+import app.school.administration.auth.application.serviceimpl.CustomUserDetailsServiceImpl;
+import app.school.administration.common.application.component.JWTAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ public class SecurityConfig {
 
     //    private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final JWTAuthFilter jwtAuthFilter;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -46,7 +46,7 @@ public class SecurityConfig {
 //                        httpSecurityOAuth2LoginConfigurer
 //                                .successHandler(oAuth2SuccessHandler))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .userDetailsService(customUserDetailsService)
+                .userDetailsService(customUserDetailsServiceImpl)
                 .httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
     }

@@ -1,0 +1,47 @@
+package app.school.administration.auth.api.controller;
+
+import app.school.administration.auth.application.serviceimpl.UserServiceImpl;
+import app.school.administration.auth.infrastructure.persistence.entity.UserEntity;
+import app.school.administration.auth.infrastructure.persistence.projection.UserProjectionDTO;
+import app.school.administration.utils.AppCommonEndPoint;
+import app.school.administration.utils.AppModuleApi;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(AppModuleApi.USER)
+public class UserController {
+
+    private final UserServiceImpl userService;
+
+    @GetMapping(AppCommonEndPoint.FIND_BY_ID)
+    public ResponseEntity<UserProjectionDTO> findById(@PathVariable(name = "uuid") UUID uuid) {
+        return ResponseEntity.ok(userService.findByIdProjection(uuid));
+    }
+
+    @PostMapping(AppCommonEndPoint.CREATE)
+    public ResponseEntity<UserEntity> create(@RequestBody UserEntity userEntity) {
+        return ResponseEntity.ok(userService.save(userEntity));
+    }
+
+    @PutMapping(AppCommonEndPoint.UPDATE)
+    public ResponseEntity<UserEntity> update(@RequestBody UserEntity userEntity) {
+        return ResponseEntity.ok(userService.save(userEntity));
+    }
+
+    @PutMapping(AppCommonEndPoint.DE_ACTIVATE)
+    public ResponseEntity<UserEntity> deActivate(@PathVariable(name = "uuid") UUID uuid) {
+        return ResponseEntity.ok(userService.deActivate(uuid));
+    }
+
+}
