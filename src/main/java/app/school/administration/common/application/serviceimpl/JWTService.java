@@ -4,7 +4,7 @@ import app.school.administration.auth.infrastructure.persistence.entity.RoleEnti
 import app.school.administration.auth.infrastructure.persistence.entity.UserEntity;
 import app.school.administration.auth.infrastructure.persistence.entity.mapping.UserRoleEntity;
 import app.school.administration.common.application.custom.exception.TokenExpirationException;
-import app.school.administration.common.jwt.properties.JWTProperties;
+import app.school.administration.common.domain.model.JWTProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;

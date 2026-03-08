@@ -1,8 +1,8 @@
 package app.school.administration.school.infrastructure.persistance.entity;
 
+import app.school.administration.auth.infrastructure.persistence.entity.TenantEntity;
 import app.school.administration.common.infrastucture.persistence.entity.AuditableBaseEntity;
 import app.school.administration.institution.infrastructure.persistance.entity.InstitutionEntity;
-import app.school.administration.auth.infrastructure.persistence.entity.TenantEntity;
 import app.school.administration.school.infrastructure.persistance.entity.mapping.TenantSchoolEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,8 +1,8 @@
 package app.school.administration.common.application.serviceimpl;
 
-import app.school.administration.common.infrastucture.persistence.entity.AuditableBaseEntity;
-import app.school.administration.common.domain.model.repository.AppBaseRepository;
 import app.school.administration.common.application.custom.exception.EntityNotFoundedException;
+import app.school.administration.common.domain.repository.AppBaseRepository;
+import app.school.administration.common.infrastucture.persistence.entity.AuditableBaseEntity;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

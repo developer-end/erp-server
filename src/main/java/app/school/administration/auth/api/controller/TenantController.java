@@ -1,8 +1,8 @@
 package app.school.administration.auth.api.controller;
 
+import app.school.administration.auth.application.serviceimpl.TenantServiceImpl;
 import app.school.administration.auth.infrastructure.persistence.entity.TenantEntity;
 import app.school.administration.auth.infrastructure.persistence.projection.TenantProjectionDTO;
-import app.school.administration.auth.application.serviceimpl.TenantServiceImpl;
 import app.school.administration.utils.AppCommonEndPoint;
 import app.school.administration.utils.AppModuleApi;
 import lombok.RequiredArgsConstructor;

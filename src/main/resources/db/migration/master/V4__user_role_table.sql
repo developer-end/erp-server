@@ -60,7 +60,7 @@ VALUES ('ROLE_SUPER_ADMIN', 'Super Administrator', 1),
 CREATE TABLE master.user_roles
 (
     user_id     UUID        NOT NULL,
-    role_id     UUID         NOT NULL,
+    role_id     UUID        NOT NULL,
     description TEXT,
     version     BIGINT      NOT NULL,
     is_active   BOOLEAN     NOT NULL DEFAULT TRUE,

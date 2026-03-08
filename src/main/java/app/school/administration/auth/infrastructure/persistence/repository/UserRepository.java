@@ -1,7 +1,7 @@
 package app.school.administration.auth.infrastructure.persistence.repository;
 
 import app.school.administration.auth.infrastructure.persistence.entity.UserEntity;
-import app.school.administration.common.domain.model.repository.AppBaseRepository;
+import app.school.administration.common.domain.repository.AppBaseRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

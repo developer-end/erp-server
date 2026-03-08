@@ -1,8 +1,8 @@
 package app.school.administration.school.api.controller;
 
+import app.school.administration.school.application.serviceimpl.SchoolServiceImpl;
 import app.school.administration.school.infrastructure.persistance.entity.SchoolEntity;
 import app.school.administration.school.infrastructure.persistance.projection.SchoolProjectionDTO;
-import app.school.administration.school.application.serviceimpl.SchoolServiceImpl;
 import app.school.administration.utils.AppCommonEndPoint;
 import app.school.administration.utils.AppModuleApi;
 import lombok.RequiredArgsConstructor;

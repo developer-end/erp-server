@@ -1,11 +1,11 @@
 package app.school.administration.institution.application.serviceimpl;
 
-import app.school.administration.common.domain.model.repository.AppBaseRepository;
 import app.school.administration.common.application.serviceimpl.AppBaseService;
+import app.school.administration.common.domain.repository.AppBaseRepository;
+import app.school.administration.institution.application.service.InstitutionService;
 import app.school.administration.institution.infrastructure.persistance.entity.InstitutionEntity;
 import app.school.administration.institution.infrastructure.persistance.projection.InstitutionProjectionDTO;
 import app.school.administration.institution.infrastructure.persistance.repository.InstitutionRepository;
-import app.school.administration.institution.application.service.InstitutionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

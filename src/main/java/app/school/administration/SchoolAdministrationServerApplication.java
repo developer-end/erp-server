@@ -1,6 +1,6 @@
 package app.school.administration;
 
-import app.school.administration.common.jwt.properties.JWTProperties;
+import app.school.administration.common.domain.model.JWTProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

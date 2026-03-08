@@ -1,11 +1,11 @@
 package app.school.administration.auth.application.serviceimpl;
 
-import app.school.administration.common.domain.model.repository.AppBaseRepository;
-import app.school.administration.common.application.serviceimpl.AppBaseService;
+import app.school.administration.auth.application.service.TenantService;
 import app.school.administration.auth.infrastructure.persistence.entity.TenantEntity;
 import app.school.administration.auth.infrastructure.persistence.projection.TenantProjectionDTO;
 import app.school.administration.auth.infrastructure.persistence.repository.TenantRepository;
-import app.school.administration.auth.application.service.TenantService;
+import app.school.administration.common.application.serviceimpl.AppBaseService;
+import app.school.administration.common.domain.repository.AppBaseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
