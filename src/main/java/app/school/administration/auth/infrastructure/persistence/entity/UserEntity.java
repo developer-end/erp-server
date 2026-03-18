@@ -73,8 +73,4 @@ public class UserEntity extends AuditableBaseEntity {
         roles.add(new UserRoleEntity(this, role));
     }
 
-    public void revokeRole(RoleEntity role) {
-        roles.removeIf(ur -> ur.getRole().equals(role));
-    }
-
 }

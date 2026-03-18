@@ -7,6 +7,7 @@ import app.school.administration.common.utils.AppCommonEndPoint;
 import app.school.administration.common.utils.AppModuleApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,12 +31,12 @@ public class InstitutionController {
     }
 
     @PostMapping(AppCommonEndPoint.CREATE)
-    public ResponseEntity<InstitutionEntity> create(@RequestBody InstitutionEntity schoolEntity) {
+    public ResponseEntity<InstitutionEntity> create(@Validated @RequestBody InstitutionEntity schoolEntity) {
         return ResponseEntity.ok(institutionService.save(schoolEntity));
     }
 
     @PutMapping(AppCommonEndPoint.UPDATE)
-    public ResponseEntity<InstitutionEntity> update(@RequestBody InstitutionEntity schoolEntity) {
+    public ResponseEntity<InstitutionEntity> update(@Validated @RequestBody InstitutionEntity schoolEntity) {
         return ResponseEntity.ok(institutionService.save(schoolEntity));
     }
 

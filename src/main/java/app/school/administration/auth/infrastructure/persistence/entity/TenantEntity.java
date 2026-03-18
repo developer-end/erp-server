@@ -2,6 +2,7 @@ package app.school.administration.auth.infrastructure.persistence.entity;
 
 import app.school.administration.common.infrastucture.persistence.entity.AuditableBaseEntity;
 import app.school.administration.school.infrastructure.persistance.entity.mapping.TenantSchoolEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
@@ -34,12 +36,13 @@ public class TenantEntity extends AuditableBaseEntity {
     @UuidGenerator
     @Column(name = "tenant_id", nullable = false, updatable = false, unique = true)
     private UUID id;
+    @NotBlank
     @Column(name = "tenant_name", nullable = false, unique = true)
     private String tenantName;
     @Column(name = "description")
     private String description;
     @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "tenant"
+            mappedBy = "tenant", cascade = {CascadeType.PERSIST}
     )
     @Where(clause = "is_active = true")
     private Set<TenantSchoolEntity> tenantSchoolEntities = new HashSet<>();

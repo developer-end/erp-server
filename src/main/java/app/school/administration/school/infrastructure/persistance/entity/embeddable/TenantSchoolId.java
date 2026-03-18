@@ -3,6 +3,7 @@ package app.school.administration.school.infrastructure.persistance.entity.embed
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class TenantSchoolId implements Serializable {
 
     @Column(name = "school_id", nullable = false)

@@ -2,11 +2,14 @@ package app.school.administration.auth.api.controller;
 
 import app.school.administration.auth.application.serviceimpl.UserServiceImpl;
 import app.school.administration.auth.infrastructure.persistence.entity.UserEntity;
+import app.school.administration.auth.infrastructure.persistence.entity.embeddable.UserRoleId;
 import app.school.administration.auth.infrastructure.persistence.projection.UserProjectionDTO;
 import app.school.administration.common.utils.AppCommonEndPoint;
 import app.school.administration.common.utils.AppModuleApi;
+import app.school.administration.school.infrastructure.persistance.entity.embeddable.TenantSchoolId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,18 +33,23 @@ public class UserController {
     }
 
     @PostMapping(AppCommonEndPoint.CREATE)
-    public ResponseEntity<UserEntity> create(@RequestBody UserEntity userEntity) {
+    public ResponseEntity<UserEntity> create(@Validated @RequestBody UserEntity userEntity) {
         return ResponseEntity.ok(userService.save(userEntity));
     }
 
     @PutMapping(AppCommonEndPoint.UPDATE)
-    public ResponseEntity<UserEntity> update(@RequestBody UserEntity userEntity) {
+    public ResponseEntity<UserEntity> update(@Validated @RequestBody UserEntity userEntity) {
         return ResponseEntity.ok(userService.save(userEntity));
     }
 
     @PutMapping(AppCommonEndPoint.DE_ACTIVATE)
     public ResponseEntity<UserEntity> deActivate(@PathVariable(name = "uuid") UUID uuid) {
         return ResponseEntity.ok(userService.deActivate(uuid));
+    }
+
+    @PutMapping(AppCommonEndPoint.USER_ROLE_MAPPING_DE_ACTIVATE)
+    public ResponseEntity<Void> userRoleMappingDeActivate(@PathVariable(name = "uuid") UserRoleId uuid) {
+        return ResponseEntity.ok(userService.userRoleDeActivate(uuid));
     }
 
 }

@@ -1,4 +1,4 @@
-package app.school.administration.common.application.custom.DTO;
+package app.school.administration.common.api.response;
 
 import java.time.LocalDateTime;
 import java.util.List;

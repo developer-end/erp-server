@@ -10,9 +10,13 @@ public interface TenantProjectionDTO extends AuditableProjectionDTO {
 
     String getDescription();
 
-    Set<SchoolProjectionDTO> getSchools();
+    Set<TenantSchoolProjectionDTO> getTenantSchoolEntities();
 
-    interface SchoolProjectionDTO extends AuditableProjectionDTO {
+    interface TenantSchoolProjectionDTO extends AuditableProjectionDTO {
+        SchoolProjectionDTO getSchool();
+    }
+
+    interface SchoolProjectionDTO {
         String getSchoolName();
     }
 

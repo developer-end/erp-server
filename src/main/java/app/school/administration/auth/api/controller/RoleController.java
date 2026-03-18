@@ -7,6 +7,7 @@ import app.school.administration.common.utils.AppCommonEndPoint;
 import app.school.administration.common.utils.AppModuleApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,12 +31,12 @@ public class RoleController {
     }
 
     @PostMapping(AppCommonEndPoint.CREATE)
-    public ResponseEntity<RoleEntity> create(@RequestBody RoleEntity roleEntity) {
+    public ResponseEntity<RoleEntity> create(@Validated @RequestBody RoleEntity roleEntity) {
         return ResponseEntity.ok(roleService.save(roleEntity));
     }
 
     @PutMapping(AppCommonEndPoint.UPDATE)
-    public ResponseEntity<RoleEntity> update(@RequestBody RoleEntity roleEntity) {
+    public ResponseEntity<RoleEntity> update(@Validated @RequestBody RoleEntity roleEntity) {
         return ResponseEntity.ok(roleService.save(roleEntity));
     }
 

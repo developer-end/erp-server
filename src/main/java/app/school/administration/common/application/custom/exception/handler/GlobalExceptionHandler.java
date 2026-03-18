@@ -1,7 +1,7 @@
-package app.school.administration.common.application.custom.handler;
+package app.school.administration.common.application.custom.exception.handler;
 
-import app.school.administration.common.application.custom.DTO.AppResponse;
-import app.school.administration.common.application.custom.DTO.FieldErrorResponse;
+import app.school.administration.common.api.response.AppResponse;
+import app.school.administration.common.api.response.FieldErrorResponse;
 import app.school.administration.common.application.custom.exception.CustomNullPointerException;
 import app.school.administration.common.application.custom.exception.EntityNotFoundedException;
 import app.school.administration.common.application.custom.exception.NoDataFoundException;
@@ -13,6 +13,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.GenericJDBCException;
 import org.hibernate.exception.JDBCConnectionException;
 import org.hibernate.exception.SQLGrammarException;
+import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
@@ -20,6 +21,7 @@ import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.net.BindException;
 import java.net.ConnectException;
@@ -68,6 +71,8 @@ public class GlobalExceptionHandler {
         exceptionRegister(InvalidDataAccessResourceUsageException.class, this::invalidDataAccessResourceUsageExceptionHandler);
         exceptionRegister(NullPointerException.class, this::nullPointerExceptionExceptionHandler);
         exceptionRegister(IllegalStateException.class, this::illegalStateExceptionHandler);
+        exceptionRegister(NotWritablePropertyException.class, this::notWritablePropertyExceptionHandler);
+        exceptionRegister(HttpMessageNotWritableException.class, this::httpMessageNotWritableExceptionHandler);
 
         exceptionRegister(JDBCConnectionException.class, this::jDBCConnectionExceptionHandler);
         exceptionRegister(ConnectException.class, this::connectExceptionHandler);
@@ -76,6 +81,7 @@ public class GlobalExceptionHandler {
         exceptionRegister(NoDataFoundException.class, this::noDataFoundedExceptionHandler);
         exceptionRegister(NoHandlerFoundException.class, this::noHandlerFoundExceptionHandler);
         exceptionRegister(EntityNotFoundedException.class, this::entityNotFoundedExceptionHandler);
+        exceptionRegister(NoResourceFoundException.class, this::noResourceFoundExceptionHandler);
 
         exceptionRegister(MethodArgumentNotValidException.class, this::badRequestHandler);
         exceptionRegister(HttpMessageNotReadableException.class, this::badRequestHandler);
@@ -124,8 +130,8 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND : HttpStatus.INTERNAL_SERVER_ERROR, (Exception) exception, httpServletRequest);
     }
 
-    private String getRootExceptionMessage(Throwable throwable) {
-        return Optional.ofNullable(throwable.getMessage()).orElse("Unexpected error occurred");
+    private String getRootExceptionMessage(Throwable throwable, String message) {
+        return Optional.ofNullable(throwable.getMessage()).orElse(Optional.ofNullable(message).isPresent() ? message : "Unexpected error occurred");
     }
 
     private String getRequestUrl(HttpServletRequest request) {
@@ -135,22 +141,30 @@ public class GlobalExceptionHandler {
     private ResponseEntity<AppResponse> buildResponse(HttpStatus status, Exception exception, HttpServletRequest request) {
         String finalMessage = "";
         if (exception != null) {
-            finalMessage = getRootExceptionMessage(exception);
+            finalMessage = getRootExceptionMessage(exception, null);
         }
         return ResponseEntity.status(status)
-                .body(new AppResponse(status.value(), status.name(), getRequestUrl(request), null, LocalDateTime.now(), finalMessage));
+                .body(new AppResponse(status.value(), status.getReasonPhrase(), getRequestUrl(request), null, LocalDateTime.now(), finalMessage));
     }
 
     private ResponseEntity<AppResponse> buildResponse(HttpStatus status, String message, HttpServletRequest request) {
         return ResponseEntity.status(status)
-                .body(new AppResponse(status.value(), status.name(), getRequestUrl(request), null, LocalDateTime.now(), message));
+                .body(new AppResponse(status.value(), status.getReasonPhrase(), getRequestUrl(request), null, LocalDateTime.now(), message));
 
     }
 
     private ResponseEntity<AppResponse> buildResponse(HttpStatus status, String message, List<FieldErrorResponse> errorResponseList,
                                                       HttpServletRequest request) {
         return ResponseEntity.status(status)
-                .body(new AppResponse(status.value(), status.name(), getRequestUrl(request), errorResponseList, LocalDateTime.now(), message));
+                .body(new AppResponse(status.value(), status.getReasonPhrase(), getRequestUrl(request), errorResponseList, LocalDateTime.now(), message));
+    }
+
+    private ResponseEntity<AppResponse> buildResponse(HttpStatus status, String message, Exception exception, List<FieldErrorResponse> errorResponseList,
+                                                      HttpServletRequest request) {
+        return ResponseEntity.status(status)
+                .body(new AppResponse(status.value(), status.getReasonPhrase(),
+                        getRequestUrl(request), errorResponseList, LocalDateTime.now(),
+                        getRootExceptionMessage(exception, message)));
     }
 
     private ResponseEntity<AppResponse> getRootExceptionOrDefaultException(Throwable rootException, HttpServletRequest httpServletRequest) {
@@ -279,6 +293,24 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, request);
     }
 
+    @ExceptionHandler(value = {NotWritablePropertyException.class})
+    private ResponseEntity<AppResponse> notWritablePropertyExceptionHandler(NotWritablePropertyException exception, HttpServletRequest request) {
+        String rootExceptionMessage = getRootExceptionMessage(exception, null);
+        if (rootExceptionMessage.contains("Could not find field for property during fallback access")) {
+            return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Projection DTO Field not matches with respective Entity fields, ".concat(rootExceptionMessage), request);
+        }
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, request);
+    }
+
+    @ExceptionHandler(value = {HttpMessageNotWritableException.class})
+    private ResponseEntity<AppResponse> httpMessageNotWritableExceptionHandler(HttpMessageNotWritableException exception, HttpServletRequest request) {
+        String rootExceptionMessage = getRootExceptionMessage(exception, null);
+        if (rootExceptionMessage.contains("Could not find field for property during fallback access")) {
+            return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Projection DTO Field not matches with respective Entity fields, ".concat(rootExceptionMessage), request);
+        }
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, request);
+    }
+
     @ExceptionHandler(value = {
             MethodArgumentNotValidException.class,
             HttpMessageNotReadableException.class,
@@ -294,7 +326,7 @@ public class GlobalExceptionHandler {
                     .stream()
                     .map(error -> new FieldErrorResponse(error.getField(), error.getRejectedValue(), error.getDefaultMessage()))
                     .collect(Collectors.toList());
-            return buildResponse(HttpStatus.BAD_REQUEST, message, errorResponseList, httpServletRequest);
+            return buildResponse(HttpStatus.BAD_REQUEST, message, exception, errorResponseList, httpServletRequest);
         } else if (exception instanceof org.springframework.validation.BindException) {
             org.springframework.validation.BindException bindException = (org.springframework.validation.BindException) exception;
             List<FieldErrorResponse> errorResponseList = bindException.getBindingResult()
@@ -302,7 +334,7 @@ public class GlobalExceptionHandler {
                     .stream()
                     .map(error -> new FieldErrorResponse(error.getField(), error.getRejectedValue(), error.getDefaultMessage()))
                     .collect(Collectors.toList());
-            return buildResponse(HttpStatus.BAD_REQUEST, message, errorResponseList, httpServletRequest);
+            return buildResponse(HttpStatus.BAD_REQUEST, message, exception, errorResponseList, httpServletRequest);
         } else {
             message = exception.getMessage();
         }
@@ -336,6 +368,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = NoDataFoundException.class)
     private ResponseEntity<AppResponse> noDataFoundedExceptionHandler(NoDataFoundException exception, HttpServletRequest httpServletRequest) {
+        return buildResponse(HttpStatus.NOT_FOUND, exception, httpServletRequest);
+    }
+
+    @ExceptionHandler(value = NoResourceFoundException.class)
+    private ResponseEntity<AppResponse> noResourceFoundExceptionHandler(NoResourceFoundException exception, HttpServletRequest httpServletRequest) {
         return buildResponse(HttpStatus.NOT_FOUND, exception, httpServletRequest);
     }
 

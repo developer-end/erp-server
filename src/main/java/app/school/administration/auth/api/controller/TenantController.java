@@ -5,8 +5,10 @@ import app.school.administration.auth.infrastructure.persistence.entity.TenantEn
 import app.school.administration.auth.infrastructure.persistence.projection.TenantProjectionDTO;
 import app.school.administration.common.utils.AppCommonEndPoint;
 import app.school.administration.common.utils.AppModuleApi;
+import app.school.administration.school.infrastructure.persistance.entity.embeddable.TenantSchoolId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,18 +32,23 @@ public class TenantController {
     }
 
     @PostMapping(AppCommonEndPoint.CREATE)
-    public ResponseEntity<TenantEntity> create(@RequestBody TenantEntity tenantEntity) {
+    public ResponseEntity<TenantEntity> create(@Validated @RequestBody TenantEntity tenantEntity) {
         return ResponseEntity.ok(tenantService.save(tenantEntity));
     }
 
     @PutMapping(AppCommonEndPoint.UPDATE)
-    public ResponseEntity<TenantEntity> update(@RequestBody TenantEntity tenantEntity) {
+    public ResponseEntity<TenantEntity> update(@Validated @RequestBody TenantEntity tenantEntity) {
         return ResponseEntity.ok(tenantService.save(tenantEntity));
     }
 
     @PutMapping(AppCommonEndPoint.DE_ACTIVATE)
     public ResponseEntity<TenantEntity> deActivate(@PathVariable(name = "uuid") UUID uuid) {
         return ResponseEntity.ok(tenantService.deActivate(uuid));
+    }
+
+    @PutMapping(AppCommonEndPoint.TENANT_SCHOOL_MAPPING_DE_ACTIVATE)
+    public ResponseEntity<Void> tenantSchoolMappingDeActivate(@PathVariable(name = "uuid") TenantSchoolId uuid) {
+        return ResponseEntity.ok(tenantService.tenantSchoolMappingDeActivate(uuid));
     }
 
 }

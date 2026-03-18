@@ -2,8 +2,12 @@ package app.school.administration.auth.application.serviceimpl;
 
 import app.school.administration.auth.application.service.UserService;
 import app.school.administration.auth.infrastructure.persistence.entity.UserEntity;
+import app.school.administration.auth.infrastructure.persistence.entity.embeddable.UserRoleId;
+import app.school.administration.auth.infrastructure.persistence.entity.mapping.UserRoleEntity;
 import app.school.administration.auth.infrastructure.persistence.projection.UserProjectionDTO;
 import app.school.administration.auth.infrastructure.persistence.repository.UserRepository;
+import app.school.administration.auth.infrastructure.persistence.repository.UserRoleRepository;
+import app.school.administration.common.application.custom.exception.NoDataFoundException;
 import app.school.administration.common.application.serviceimpl.AppBaseService;
 import app.school.administration.common.domain.repository.AppBaseRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +23,7 @@ import java.util.UUID;
 public class UserServiceImpl extends AppBaseService<UserEntity, UUID> implements UserService {
 
     private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Override
     protected AppBaseRepository<UserEntity, UUID> getJpaRepository() {
@@ -48,6 +53,17 @@ public class UserServiceImpl extends AppBaseService<UserEntity, UUID> implements
     @Override
     public UserProjectionDTO findByIdProjection(UUID id) {
         return appFindByIdProjection(id, UserProjectionDTO.class);
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    @Override
+    public Void userRoleDeActivate(UserRoleId id) {
+        UserRoleEntity userRoleEntity = userRoleRepository.findById(id).orElseThrow(NoDataFoundException::new);
+        userRoleEntity.setActive(false);
+        return null;
     }
 
     /**

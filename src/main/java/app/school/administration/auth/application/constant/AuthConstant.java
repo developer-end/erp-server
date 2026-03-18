@@ -10,7 +10,7 @@ public interface AuthConstant {
             AppModuleApi.AUTH,
             AppModuleApi.O_AUTH
             , AppModuleApi.SCHOOL
-            , AppModuleApi.INSTITUTION
+            , AppModuleApi.INSTITUTION, AppModuleApi.TENANT
     );
 
 }

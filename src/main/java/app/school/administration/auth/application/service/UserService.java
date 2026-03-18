@@ -1,6 +1,7 @@
 package app.school.administration.auth.application.service;
 
 import app.school.administration.auth.infrastructure.persistence.entity.UserEntity;
+import app.school.administration.auth.infrastructure.persistence.entity.embeddable.UserRoleId;
 import app.school.administration.auth.infrastructure.persistence.projection.UserProjectionDTO;
 
 import java.util.Optional;
@@ -13,6 +14,8 @@ public interface UserService {
     Optional<UserEntity> findByUsernameAndPassword(String username, String password);
 
     UserProjectionDTO findByIdProjection(UUID uuid);
+
+    Void userRoleDeActivate(UserRoleId id);
 
     UserEntity deActivate(UUID uuid);
 

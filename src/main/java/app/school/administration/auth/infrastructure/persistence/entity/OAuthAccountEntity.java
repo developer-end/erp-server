@@ -1,8 +1,11 @@
 package app.school.administration.auth.infrastructure.persistence.entity;
 
+import app.school.administration.auth.application.constant.AuthProvider;
 import app.school.administration.common.infrastucture.persistence.entity.AuditableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -29,6 +32,10 @@ import java.util.UUID;
                 @UniqueConstraint(
                         name = "uq_provider_user",
                         columnNames = {"provider", "provider_user_id"}
+                ),
+                @UniqueConstraint(
+                        name = "uq_provider_user_id",
+                        columnNames = {"provider", "user_id"}
                 )
         },
         indexes = {
@@ -50,13 +57,13 @@ public class OAuthAccountEntity extends AuditableBaseEntity {
     @UuidGenerator
     @Column(name = "oauth_id", nullable = false, updatable = false, unique = true)
     private UUID id;
+    @Enumerated(EnumType.STRING)
     @Column(name = "provider", nullable = false)
-    private String provider;
+    private AuthProvider provider;
     @Column(name = "provider_user_id", nullable = false)
     private String providerUserId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @Where(clause = "is_active = true")
     private UserEntity user;
 
     protected OAuthAccountEntity() {

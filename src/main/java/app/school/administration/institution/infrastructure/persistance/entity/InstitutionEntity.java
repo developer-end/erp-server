@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
@@ -33,8 +34,10 @@ public class InstitutionEntity extends AuditableBaseEntity {
     @UuidGenerator
     @Column(name = "institution_id", nullable = false, updatable = false, unique = true)
     private UUID id;
+    @NotBlank
     @Column(name = "institution_name", nullable = false, unique = true)
     private String institutionName;
+    @NotBlank
     @Column(name = "institution_code", nullable = false, unique = true)
     private String institutionCode;
     @Column(name = "description")

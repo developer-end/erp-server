@@ -33,6 +33,8 @@ CREATE TABLE master.oauth_accounts
 );
 CREATE UNIQUE INDEX idx_oauth_provider_user
     ON master.oauth_accounts (provider, provider_user_id);
+CREATE UNIQUE INDEX idx_oauth_provider_user_id
+    ON master.oauth_accounts (provider, user_id);
 CREATE INDEX idx_oauth_provider_active ON master.oauth_accounts (is_active);
 
 CREATE TABLE master.role_table

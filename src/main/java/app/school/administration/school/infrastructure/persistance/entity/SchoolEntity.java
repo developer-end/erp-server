@@ -4,6 +4,7 @@ import app.school.administration.auth.infrastructure.persistence.entity.TenantEn
 import app.school.administration.common.infrastucture.persistence.entity.AuditableBaseEntity;
 import app.school.administration.institution.infrastructure.persistance.entity.InstitutionEntity;
 import app.school.administration.school.infrastructure.persistance.entity.mapping.TenantSchoolEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
@@ -39,6 +41,7 @@ public class SchoolEntity extends AuditableBaseEntity {
     @UuidGenerator
     @Column(name = "school_id", nullable = false, updatable = false, unique = true)
     private UUID id;
+    @NotBlank
     @Column(name = "school_name", nullable = false, unique = true)
     private String schoolName;
     @OneToMany(fetch = FetchType.LAZY,
@@ -47,7 +50,7 @@ public class SchoolEntity extends AuditableBaseEntity {
     @Where(clause = "is_active = true")
     private Set<TenantSchoolEntity> tenantSchoolEntities = new HashSet<>();
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "institution_id", nullable = false)
+    @JoinColumn(name = "institution_id")
     private InstitutionEntity institution;
 
     protected SchoolEntity() {
@@ -57,9 +60,6 @@ public class SchoolEntity extends AuditableBaseEntity {
         tenantSchoolEntities.add(new TenantSchoolEntity(tenant, this));
     }
 
-    public void revokeTenant(TenantEntity tenant) {
-        tenantSchoolEntities.removeIf(ur -> ur.getTenant().equals(tenant));
-    }
 
 
 }
